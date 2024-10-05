@@ -14,11 +14,11 @@ The **Multi-User Cafe Management System** is a web application that allows admin
 
 ## Tech Stack
 
-- **Frontend**: Angular, Angular Material, FileSaver.js
-- **Backend**: Spring Boot, Spring Security
-- **Database**: Firebase Firestore for data storage
+- **Frontend**: Angular, Angular Material, FileSaver.js, JWT for authentication, and route guards for protecting routes.
+- **Backend**: Spring Boot with Spring Security for handling authentication and authorization.
+- **Database**: MySQL for data storage.
 - **Email Service**: Spring Mail for sending emails
-- **Build Tool**: Maven for managing the Spring Boot application
+- **Build Tool**:Maven for managing the Spring Boot application.
 
 ## Installation
 
@@ -34,4 +34,5 @@ The **Multi-User Cafe Management System** is a web application that allows admin
 ```bash
 git clone https://github.com/Kouki321/cafe_managment.git
 ```
-"# cafe_managment" 
+
+"# cafe_managment"
