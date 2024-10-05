@@ -1,0 +1,9 @@
+.red-snackBar {
+  background-color: #f44336; /* Red background */
+  color: white; /* White text */
+}
+
+.green-snackBar {
+  background-color: #4caf50; /* Green background */
+  color: white; /* White text */
+}

@@ -1,0 +1,69 @@
+/* You can add global styles to this file, and also import other style files */
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+//responsibe table
+@media (max-width: 800px) {
+  .responsive_table {
+    overflow-x: auto !important;
+  }
+
+  .mat-table {
+    min-width: 800px;
+  }
+}
+
+.mat-row {
+  height: auto;
+}
+
+.mat-header-cell,
+.mat-cell {
+  text-align: center !important;
+  padding: 0px 8px 0px 15px !important;
+}
+
+.red-snackBar {
+  background-color: #f44336; /* Red background */
+  color: white; /* White text */
+}
+
+.green-snackBar {
+  background-color: #4caf50; /* Green background */
+  color: white; /* White text */
+}
+/* Global styles for toastr notifications */
+.toast-top-right {
+  margin-top: 20px; /* Adjust as needed */
+}
+
+.toast-success {
+  background-color: #4caf50 !important; /* Green background */
+  color: white !important; /* White text */
+}
+
+.toast-error {
+  background-color: #f44336 !important; /* Red background */
+  color: white !important; /* White text */
+}
+
+.mat-snack-bar-container {
+  margin-right: auto !important;
+  margin-left: auto !important;
+  width: 40vw !important;
+  min-width: 90% !important;
+  max-width: 100vw !important;
+  margin-top: 70px !important;
+  padding: 20px !important;
+}
+
+.spacer {
+  flex: 1 auto;
+}
