@@ -1,0 +1,66 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout Code') {
+            steps {
+                // Clone the repository
+                git 'https://github.com/Kouki321/Multi-User-Cafe-Management-System.git'  // Update with your repo URL
+            }
+        }
+
+        stage('Build cafe Managment') {
+            steps {
+                // Navigate to the backend directory and build
+                dir('backend') {
+                    // Use appropriate build commands for your backend
+                    sh 'mvn install'  // For Node.js
+                    // or
+                    // sh 'mvn clean install'  // For Maven projects
+                }
+            }
+        }
+
+        stage('Build Frontend') {
+            steps {
+                // Navigate to the frontend directory and build
+                dir('Frontend') {
+                    sh 'npm install --legacy-peer-deps'
+                    sh 'npm run build --legacy-peer-deps'
+                }
+            }
+        }
+
+        stage('Run Tests') {
+            steps {
+                // Run frontend tests
+                dir('frontend') {
+                    sh 'npm run test:e2e --legacy-peer-deps'
+                }
+                // Run backend tests
+                dir('cafe Managment') {
+                    // Use appropriate test command for your backend
+                    sh 'mvn test'  // For Node.js
+                    // or
+                    // sh 'mvn test'  // For Maven projects
+                }
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                // Deployment steps go here
+                echo 'Deploying application...'
+                // You can add scripts to deploy both the frontend and backend
+            }
+        }
+    }
+    post {
+        success {
+            echo 'Pipeline completed successfully!'
+        }
+        failure {
+            echo 'Pipeline failed!'
+        }
+    }
+}
