@@ -1,0 +1,52 @@
+trigger:
+- main
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+# Install Node.js
+- task: NodeTool@0
+  inputs:
+    versionSpec: '20.x'
+  displayName: 'Install Node.js'
+
+# Install dependencies, build the Angular app, and run tests
+- script: |
+    npm install -g @angular/cli
+    npm install
+    ng build --prod
+  displayName: 'npm install and build'
+
+- script: |
+    npm install
+    npm test -- --reporters=mocha-junit-reporter
+  displayName: 'Install dependencies and run tests'
+
+# Publish test results (JUnit format)
+- task: PublishTestResults@2
+  inputs:
+    testResultsFormat: 'JUnit'
+    testResultsFiles: '**/TEST-*.xml'
+    mergeTestResults: true
+  displayName: 'Publish test results'
+
+# Prepare SonarQube analysis
+- task: SonarQubePrepare@5
+  inputs:
+    SonarQube: 'YourSonarQubeServiceConnection'   # Make sure this is the correct service connection
+    scannerMode: 'CLI'
+    configMode: 'manual'
+    cliProjectKey: 'YourProjectKey'   # Replace with your project key
+    cliProjectName: 'YourProjectName'  # Replace with your project name
+    cliSources: '.'  # Path to your source code (usually the root directory)
+
+# Analyze code with SonarQube
+- task: SonarQubeAnalyze@5
+  inputs:
+    SonarQube: 'YourSonarQubeServiceConnection'
+
+# Publish SonarQube results
+- task: SonarQubePublish@5
+  inputs:
+    pollingTimeoutSec: '300'
