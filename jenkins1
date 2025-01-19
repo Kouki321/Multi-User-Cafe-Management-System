@@ -1,5 +1,5 @@
 pipeline {
-    agent { label 'Linux' }  // Ensure this section is properly configured
+    agent any  // Utilise n'importe quel agent disponible, y compris le nœud master
 
     options {
         buildDiscarder(logRotator(numToKeepStr: '5'))
@@ -9,11 +9,7 @@ pipeline {
         stage('Scan') {
             steps {
                 withSonarQubeEnv(installationName: 'sq1') {
-                    // Using Maven Wrapper
                     sh './mvnw clean org.sonarsource.scanner.maven:sonar-maven-plugin:3.9.0.2155:sonar'
-
-                    // Alternatively, use the system Maven if wrapper is not available
-                    // sh 'mvn clean org.sonarsource.scanner.maven:sonar-maven-plugin:3.9.0.2155:sonar'
                 }
             }
         }
