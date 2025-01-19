@@ -9,7 +9,7 @@ pipeline {
         // Stage 1: Checkout code from Git
         stage('Checkout Code') {
             steps {
-                checkout scm
+                checkout scm // This will checkout the latest code from the repository
             }
         }
 
