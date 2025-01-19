@@ -1,17 +1,91 @@
 pipeline {
-    agent any  // Utilise n'importe quel agent disponible, y compris le nœud master
+    agent any
 
-    options {
-        buildDiscarder(logRotator(numToKeepStr: '5'))
+    environment {
+        // Define environment variables if needed
+        SONARQUBE = 'sonar' // SonarQube server name in Jenkins
+        DOCKER_IMAGE = 'myapp:latest'
     }
 
     stages {
-        stage('Scan') {
+        // Stage 1: Checkout code from Git
+        stage('Checkout Code') {
             steps {
-                withSonarQubeEnv(installationName: 'sq1') {
-                    sh './mvnw clean org.sonarsource.scanner.maven:sonar-maven-plugin:4.0.0.4121:sonar'
+                checkout scm
+            }
+        }
+
+        // Stage 2: Compile the code
+        stage('Compile Code') {
+            steps {
+                script {
+                    // Assuming you're using Maven or Gradle
+                    sh 'mvn clean install' // for Maven
+                    // Or use Gradle: sh './gradlew build'
                 }
             }
+        }
+
+        // Stage 3: Run Unit Tests (JUnit)
+        stage('Run Unit Tests') {
+            steps {
+                script {
+                    // Run JUnit tests (adjust for your project)
+                    sh 'mvn test' // for Maven
+                    // Or use Gradle: sh './gradlew test'
+                }
+            }
+        }
+
+        // Stage 4: SonarQube analysis
+        stage('SonarQube Analysis') {
+            steps {
+                script {
+                    // Trigger SonarQube analysis
+                    sh 'mvn sonar:sonar -Dsonar.projectKey=my_project' // for Maven
+                    // Or use Gradle: sh './gradlew sonarqube'
+                }
+            }
+        }
+
+        // Stage 5: Security Dependency Check (OWASP Dependency-Check)
+        stage('Security Dependency Check') {
+            steps {
+                script {
+                    // You can use OWASP Dependency-Check for security scanning
+                    sh 'dependency-check --project my_project --scan ./target' // for Maven
+                    // Or use a security plugin like Snyk: sh 'snyk test'
+                }
+            }
+        }
+
+        // Stage 6: Build Docker Image
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    // Build a Docker image from the Dockerfile
+                    sh 'docker build -t $DOCKER_IMAGE .' // Replace with your Dockerfile location
+                }
+            }
+        }
+
+        // Stage 7: Push Docker Image to Registry (optional)
+        stage('Push Docker Image') {
+            steps {
+                script {
+                    // Optional: Push the Docker image to Docker Hub or other registry
+                    sh 'docker push $DOCKER_IMAGE'
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Pipeline completed successfully.'
+        }
+        failure {
+            echo 'Pipeline failed.'
         }
     }
 }
