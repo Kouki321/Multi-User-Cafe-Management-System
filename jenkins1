@@ -2,8 +2,6 @@ pipeline {
     agent any
 
     environment {
-        // Define environment variables if needed
-        SONARQUBE = 'sonar' // SonarQube server name in Jenkins
         DOCKER_IMAGE = 'myapp:latest'
     }
 
@@ -37,18 +35,7 @@ pipeline {
             }
         }
 
-        // Stage 4: SonarQube analysis
-        stage('SonarQube Analysis') {
-            steps {
-                script {
-                    // Trigger SonarQube analysis
-                    sh 'mvn sonar:sonar -Dsonar.projectKey=my_project' // for Maven
-                    // Or use Gradle: sh './gradlew sonarqube'
-                }
-            }
-        }
-
-        // Stage 5: Security Dependency Check (OWASP Dependency-Check)
+        // Stage 4: Security Dependency Check (OWASP Dependency-Check)
         stage('Security Dependency Check') {
             steps {
                 script {
@@ -59,7 +46,7 @@ pipeline {
             }
         }
 
-        // Stage 6: Build Docker Image
+        // Stage 5: Build Docker Image
         stage('Build Docker Image') {
             steps {
                 script {
@@ -69,7 +56,7 @@ pipeline {
             }
         }
 
-        // Stage 7: Push Docker Image to Registry (optional)
+        // Stage 6: Push Docker Image to Registry (optional)
         stage('Push Docker Image') {
             steps {
                 script {
